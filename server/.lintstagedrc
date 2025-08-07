@@ -1,0 +1,3 @@
+{
+  "server/src/**/*.{ts,tsx}": ["cd server && eslint --fix", "cd server && prettier --write"]
+}
