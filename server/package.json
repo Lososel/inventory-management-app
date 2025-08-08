@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "prepare": "husky",
+    "prepare": "cd .. && husky ./server/.husky",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write ."
   },
