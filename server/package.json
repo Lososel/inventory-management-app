@@ -8,7 +8,9 @@
     "build": "tsc",
     "prepare": "cd .. && husky ./server/.husky",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "dev": "nodemon --watch src --exec tsx src/index.ts",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,8 +18,13 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.13.0",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth20": "^2.0.0",
     "prisma": "^6.13.0"
   },
   "devDependencies": {
@@ -33,6 +40,7 @@
     "nodemon": "^3.1.10",
     "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.9.2"
   }
 }
