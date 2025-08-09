@@ -1,6 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import { Suspense } from "react";
-import { router } from "./routes/AppRouter";
+import { router } from "./routes/router";
 
 export default function App() {
   return (
