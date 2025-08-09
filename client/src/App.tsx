@@ -1,11 +1,11 @@
-import "./App.css";
+import { RouterProvider } from "react-router-dom";
+import { Suspense } from "react";
+import { router } from "./routes/AppRouter";
 
-function App() {
+export default function App() {
   return (
-    <>
-      <h1>Inventory App</h1>
-    </>
+    <Suspense fallback={<div>Loading…</div>}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 }
-
-export default App;
