@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String      @id @default(cuid())
+  email       String      @unique
+  name        String?
+  role        Role        @default(USER)
+  isBlocked   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  inventories Inventory[] @relation("OwnerInventories")
+  Item        Item[]
+}
+
+model Inventory {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  isPublic    Boolean  @default(false)
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  ownerId     String
+  owner       User     @relation("OwnerInventories", fields: [ownerId], references: [id])
+  items       Item[]
+}
+
+model Item {
+  id          String    @id @default(cuid())
+  customId    String
+  version     Int       @default(1)
+  createdAt   DateTime  @default(now())
+  createdById String
+  createdBy   User      @relation(fields: [createdById], references: [id])
+  inventoryId String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+
+  @@unique([inventoryId, customId])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
