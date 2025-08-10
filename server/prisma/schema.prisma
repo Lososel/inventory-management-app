@@ -16,6 +16,31 @@ model User {
   createdAt   DateTime    @default(now())
   inventories Inventory[] @relation("OwnerInventories")
   Item        Item[]
+
+  accounts      Account[]
+  refreshTokens RefreshToken[]
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  provider          Provider
+  providerAccountId String
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+
+  @@unique([provider, providerAccountId], name: "provider_providerAccountId")
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
 }
 
 model Inventory {
@@ -46,4 +71,9 @@ model Item {
 enum Role {
   USER
   ADMIN
+}
+
+enum Provider {
+  google
+  github
 }
