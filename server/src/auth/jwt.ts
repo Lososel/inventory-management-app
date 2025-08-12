@@ -39,3 +39,11 @@ export function requireAuth(
     return res.status(401).json({ error: 'Invalid token' });
   }
 }
+
+export function requireRole(role: 'ADMIN') {
+  return (req: Request & { auth?: AccessPayload }, res: Response, next: NextFunction) => {
+    if (!req.auth) return res.status(401).json({ error: 'No token' });
+    if (req.auth.role !== role) return res.status(403).json({ error: 'Forbidden' });
+    next();
+  };
+}
