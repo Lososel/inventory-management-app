@@ -1,11 +1,10 @@
 import * as jwt from 'jsonwebtoken';
 import type { Secret, SignOptions, JwtPayload } from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
+import { config } from '../config/config.js'
 
-const ACCESS_SECRET: Secret = process.env.JWT_ACCESS_SECRET ?? '';
-if (!ACCESS_SECRET) {
-  throw new Error('JWT_ACCESS_SECRET is not set');
-}
+const ACCESS_SECRET: Secret = config.jwt.secret;
+const ttl = config.jwt.ttl;
 
 export type AccessPayload = JwtPayload & {
   sub: string;
@@ -13,9 +12,7 @@ export type AccessPayload = JwtPayload & {
 };
 
 export function issueAccessToken(sub: string, role: 'USER' | 'ADMIN') {
-  const expiresInSeconds =
-    process.env.JWT_ACCESS_TTL ? Number(process.env.JWT_ACCESS_TTL) : 15 * 60;
-  const opts: SignOptions = { expiresIn: expiresInSeconds };
+  const opts: SignOptions = { expiresIn: ttl };
   return jwt.sign({ sub, role }, ACCESS_SECRET, opts);
 }
 

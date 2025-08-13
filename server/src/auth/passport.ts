@@ -7,6 +7,7 @@ import type {
 import { Strategy as GitHub } from 'passport-github2';
 import type { Profile as GitHubProfile } from 'passport-github2';
 import { prisma } from '../db/prisma.js';
+import { config } from '../config/config.js';
 
 type Provider = 'google' | 'github';
 
@@ -34,9 +35,9 @@ async function upsertUser(provider: Provider, profile: GoogleProfile | GitHubPro
 passport.use(
   new Google(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL!,
+      clientID: config.google.clientId,
+      clientSecret: config.google.clientSecret,
+      callbackURL: config.google.callbackUrl,
     },
     async (_at: string, _rt: string, profile: GoogleProfile, done: GoogleVerify) => {
       try {
@@ -52,9 +53,9 @@ passport.use(
 passport.use(
   new GitHub(
     {
-      clientID: process.env.GITHUB_CLIENT_ID!,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-      callbackURL: process.env.GITHUB_CALLBACK_URL!,
+      clientID: config.github.clientId,
+      clientSecret: config.github.clientSecret,
+      callbackURL: config.github.callbackUrl,
       scope: ['user:email'],
     },
     async (_at: string, _rt: string, profile: GitHubProfile, done: any) => {
