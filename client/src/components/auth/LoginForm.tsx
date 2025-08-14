@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 
 interface LoginFormProps {
   onLogin?: (email: string, password: string) => void;
@@ -16,84 +17,83 @@ export default function LoginForm({ onLogin }: LoginFormProps) {
   }
 
   return (
-    <div className="container py-5">
-      <div className="row justify-content-center">
-        <div className="col-12 col-sm-8 col-md-6 col-lg-4">
-          <div className="card shadow-sm border-0">
-            <div className="card-body">
-              <h5 className="card-title mb-3 text-center">Log in</h5>
+    <Container className="py-5">
+      <Row className="justify-content-center">
+        <Col xs={12} sm={8} md={6} lg={4}>
+          <Card className="shadow-sm border-0">
+            <Card.Body>
+              <Card.Title className="text-center mb-3">Log in</Card.Title>
 
-              <form onSubmit={handleSubmit} className="d-grid gap-2">
-                <div className="mb-2">
-                  <label htmlFor="email" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    id="email"
+              <Form onSubmit={handleSubmit} className="d-grid gap-2">
+                <Form.Group controlId="email" className="mb-2">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
                     type="email"
-                    className="form-control"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     autoComplete="email"
+                    placeholder="name@example.com"
                   />
-                </div>
+                </Form.Group>
 
-                <div className="mb-2">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    id="password"
+                <Form.Group controlId="password" className="mb-2">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
                     type="password"
-                    className="form-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     autoComplete="current-password"
+                    placeholder="••••••••"
                   />
-                </div>
+                </Form.Group>
 
-                <button
+                <Button
                   type="submit"
-                  className="btn btn-primary w-100"
+                  variant="primary"
+                  className="w-100"
                   disabled={!onLogin}
                 >
                   Login
-                </button>
-              </form>
+                </Button>
+              </Form>
 
               <div className="text-center my-3">
-                <span className="text-muted">OR</span>
+                <small className="text-muted">OR</small>
               </div>
 
               <div className="d-grid gap-2">
-                <a
-                  className="btn btn-outline-secondary w-100"
+                <Button
+                  as="a"
+                  variant="outline-secondary"
                   href={`${API_URL}/auth/google`}
+                  className="w-100"
                 >
-                  <i className="bi bi-google me-2" /> Continue with Google
-                </a>
-                <a
-                  className="btn btn-outline-dark w-100"
+                  <i className="bi bi-google me-2" aria-hidden="true" />
+                  Continue with Google
+                </Button>
+
+                <Button
+                  as="a"
+                  variant="outline-dark"
                   href={`${API_URL}/auth/github`}
+                  className="w-100"
                 >
-                  <i className="bi bi-github me-2" /> Continue with GitHub
-                </a>
+                  <i className="bi bi-github me-2" aria-hidden="true" />
+                  Continue with GitHub
+                </Button>
               </div>
 
-              <div className="text-center mt-3">
+              <Card.Text className="text-center mt-3">
                 <a href="#" className="link-secondary small">
                   Do not have an account? Register
                 </a>
-              </div>
-            </div>
-          </div>
-          <p className="text-muted text-center mt-3 small">
-            Inventory Management App
-          </p>
-        </div>
-      </div>
-    </div>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 }
