@@ -1,5 +1,6 @@
 import axios from "axios";
-import { getToken } from "../lib/token";
+import { getToken, clearToken } from "../lib/token";
+import { clearUser } from "../lib/userStore";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -13,3 +14,17 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (r) => r,
+  (err) => {
+    if (err?.response?.status === 401) {
+      clearToken();
+      clearUser();
+      if (location.pathname !== "/login") {
+        location.replace("/login");
+      }
+    }
+    return Promise.reject(err);
+  },
+);
