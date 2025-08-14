@@ -1,12 +1,14 @@
-import { createContext } from "react";
+import { createContext, type Dispatch, type SetStateAction } from "react";
 import type { User } from "../types/interfaces";
 
-interface AuthContext {
+export type AuthCtx = {
   user: User | null;
-  setUser: (user: User | null) => void;
-}
+  setUser: Dispatch<SetStateAction<User | null>>;
+  logout: () => void;
+};
 
-export const AuthContext = createContext<AuthContext>({
+export const AuthContext = createContext<AuthCtx>({
   user: null,
-  setUser: () => {},
+  setUser: () => undefined,
+  logout: () => undefined,
 });
