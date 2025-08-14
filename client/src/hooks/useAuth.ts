@@ -1,35 +1,23 @@
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { useUser } from "./useUser";
+import { setToken, clearToken } from "../lib/token";
 import type { User } from "../types/interfaces";
-import { useLocalStorage } from "./useLocalStorage";
 
 export const useAuth = () => {
-  const { user, addUser, clearUser, setUser } = useUser();
-  const { getItem } = useLocalStorage();
-
-  useEffect(() => {
-    const cached = getItem("user");
-    if (cached) {
-      try {
-        addUser(JSON.parse(cached) as User);
-      } catch {
-        clearUser();
-      }
-    }
-  }, []);
+  const { user, setUser, clearUser, logout } = useUser();
 
   const login = useCallback(
-    (user: User, token?: string) => {
-      if (token) sessionStorage.setItem("access_token", token);
-      addUser(user);
+    (u: User, token?: string) => {
+      if (token) setToken(token);
+      setUser(u);
     },
-    [addUser],
+    [setUser],
   );
 
-  const logout = useCallback(() => {
-    sessionStorage.removeItem("access_token");
+  const localLogout = useCallback(() => {
+    clearToken();
     clearUser();
   }, [clearUser]);
 
-  return { user, login, logout, setUser };
+  return { user, login, logout: localLogout ?? logout };
 };

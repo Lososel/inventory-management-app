@@ -1,19 +1,14 @@
 import { RouterProvider } from "react-router-dom";
-import { Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import { router } from "./routes/router";
-import { AuthContext } from "./context/AuthContext";
-import { useAuth } from "./hooks/useAuth";
+import AuthProvider from "./context/AuthProvider";
 
 export default function App() {
-  const { user, setUser } = useAuth();
-
-  const authValue = useMemo(() => ({ user, setUser }), [user, setUser]);
-
   return (
-    <AuthContext.Provider value={authValue}>
+    <AuthProvider>
       <Suspense fallback={<div>Loading…</div>}>
         <RouterProvider router={router} />
       </Suspense>
-    </AuthContext.Provider>
+    </AuthProvider>
   );
 }
