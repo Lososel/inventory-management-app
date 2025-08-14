@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { setToken } from "../lib/token";
-import AuthHeader from "../components/nav/AuthHeader";
+import Header from "../components/nav/Header";
 
 export default function Login() {
   const [params] = useSearchParams();
@@ -17,7 +17,7 @@ export default function Login() {
 
   return (
     <div>
-      <AuthHeader></AuthHeader>
+      <Header></Header>
     </div>
   );
 }
