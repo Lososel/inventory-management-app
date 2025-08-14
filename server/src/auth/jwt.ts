@@ -1,7 +1,7 @@
-import * as jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import type { Secret, SignOptions, JwtPayload } from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
-import { config } from '../config/config.js'
+import { config } from '../config/config.js';
 
 const ACCESS_SECRET: Secret = config.jwt.secret;
 const ttl = config.jwt.ttl;
