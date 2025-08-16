@@ -1,38 +1,32 @@
-
 :root,
 [data-bs-theme="light"] {
-
-  --app-bg: #f7fafd;      
+  --app-bg: #f7fafd;
   --app-fg: #212529;
 
-
-  --app-card-bg: #ffffff;  
+  --app-card-bg: #ffffff;
   --app-card-fg: #212529;
-
 
   --app-border: rgba(0, 0, 0, 0.125);
   --app-muted: #6c757d;
 
-
-  --app-contrast: #4a5c6e;     
+  --app-contrast: #4a5c6e;
   --app-contrast-hover-fg: #ffffff;
-  --app-outline-hover-bg: #4a5c6e; 
+  --app-outline-hover-bg: #4a5c6e;
 }
 
-
 [data-bs-theme="dark"] {
-  --app-bg: #202124;           
+  --app-bg: #202124;
   --app-fg: #f8f9fa;
 
-  --app-card-bg: #292a2d;     
+  --app-card-bg: #292a2d;
   --app-card-fg: #979ca1;
 
   --app-border: rgba(255, 255, 255, 0.149);
   --app-muted: #ced4da;
 
-  --app-contrast: #90a8d2;    
+  --app-contrast: #90a8d2;
   --app-contrast-hover-fg: #141414;
-  --app-outline-hover-bg: #90a8d2; 
+  --app-outline-hover-bg: #90a8d2;
 }
 
 :root,
@@ -52,10 +46,9 @@
   --bs-btn-color: var(--app-contrast);
   --bs-btn-border-color: var(--app-contrast);
 
-   --bs-btn-hover-bg: var(--app-outline-hover-bg);
+  --bs-btn-hover-bg: var(--app-outline-hover-bg);
   --bs-btn-hover-color: var(--app-contrast-hover-fg);
   --bs-btn-hover-border-color: var(--app-contrast);
-
 
   --bs-btn-focus-shadow-rgb: 108, 117, 125;
 
@@ -67,4 +60,3 @@
   --bs-btn-disabled-bg: transparent;
   --bs-btn-disabled-border-color: var(--app-contrast);
 }
-
