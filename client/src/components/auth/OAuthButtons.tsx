@@ -23,7 +23,7 @@ export default function OAuthButtons({
       {google && (
         <Button
           as="a"
-          variant="outline-secondary"
+          variant="outline-contrast"
           href={withNext(`${API_URL}/auth/google`)}
           className="w-100"
         >
@@ -35,7 +35,7 @@ export default function OAuthButtons({
       {github && (
         <Button
           as="a"
-          variant="outline-dark"
+          variant="outline-contrast"
           href={withNext(`${API_URL}/auth/github`)}
           className="w-100"
         >
