@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getToken, clearToken } from "../lib/token";
 import { clearUser } from "../lib/userStore";
+import i18n from "../i18n";
 
 const baseURL = import.meta.env.VITE_API_URL;
 
@@ -12,6 +13,11 @@ api.interceptors.request.use((config) => {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  config.headers = config.headers ?? {};
+  config.headers["Accept-Language"] = i18n.language?.startsWith("ru")
+    ? "ru"
+    : "en";
   return config;
 });
 

@@ -1,0 +1,28 @@
+{
+  "app": {
+    "brand": "Inventory App"
+  },
+  "nav": {
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "registerLink": "Do not have an account? Register"
+    },
+    "register": {
+      "title": "Register",
+      "loginLink": "Do you have an account? Login"
+    },
+    "oauth": {
+      "google": "Continue with Google",
+      "github": "Continue with GitHub"
+    }
+  },
+  "pages": {
+    "main": "Main",
+    "profile": "Profile",
+    "notFound": "Not Found"
+  }
+}

@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,6 +16,7 @@ export default function OAuthButtons({
   github = true,
   next,
 }: OAuthButtonsProps) {
+  const { t } = useTranslation();
   const withNext = (url: string) =>
     next ? `${url}?next=${encodeURIComponent(next)}` : url;
 
@@ -28,7 +30,7 @@ export default function OAuthButtons({
           className="w-100"
         >
           <i className="bi bi-google me-2" aria-hidden="true" />
-          Continue with Google
+          {t("auth.oauth.google")}
         </Button>
       )}
 
@@ -40,7 +42,7 @@ export default function OAuthButtons({
           className="w-100"
         >
           <i className="bi bi-github me-2" aria-hidden="true" />
-          Continue with GitHub
+          {t("auth.oauth.github")}
         </Button>
       )}
     </div>

@@ -1,0 +1,28 @@
+{
+  "app": {
+    "brand": "Inventory App"
+  },
+  "nav": {
+    "login": "Войти",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "login": {
+      "title": "Вход",
+      "registerLink": "Нет аккаунта? Создать аккаунт"
+    },
+    "register": {
+      "title": "Регистрация",
+      "loginLink": "Уже есть аккаунт? Войти"
+    },
+    "oauth": {
+      "google": "Войти через Google",
+      "github": "Войти через GitHub"
+    }
+  },
+  "pages": {
+    "main": "Главная",
+    "profile": "Профиль",
+    "notFound": "Страница не найдена"
+  }
+}
