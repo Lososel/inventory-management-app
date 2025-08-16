@@ -1,6 +1,6 @@
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { Container, Row, Col, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import OAuthButtons from "../../components/auth/OAuthButtons";
 
 export default function RegisterForm() {
   return (
@@ -11,27 +11,13 @@ export default function RegisterForm() {
             <Card.Body>
               <Card.Title className="text-center mb-3">Register</Card.Title>
 
-              <div className="d-grid gap-2">
-                <Button
-                  as="a"
-                  variant="outline-secondary"
-                  href={`${API_URL}/auth/google`}
-                  className="w-100"
-                >
-                  <i className="bi bi-google me-2" aria-hidden="true" />
-                  Continue with Google
-                </Button>
+              <OAuthButtons className="mb-2" next="/onboarding" />
 
-                <Button
-                  as="a"
-                  variant="outline-dark"
-                  href={`${API_URL}/auth/github`}
-                  className="w-100"
-                >
-                  <i className="bi bi-github me-2" aria-hidden="true" />
-                  Continue with GitHub
-                </Button>
-              </div>
+              <Card.Text className="text-center mt-3">
+                <Link to="/login" className="link-secondary small">
+                  Do you have an account? Login
+                </Link>
+              </Card.Text>
             </Card.Body>
           </Card>
         </Col>
