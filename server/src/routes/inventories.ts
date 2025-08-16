@@ -1,28 +1,26 @@
-import { Router } from "express";
-import { prisma } from "../db/prisma.js";
-import { requireAuth } from "../auth/jwt.js";
+import { Router } from 'express';
+import { prisma } from '../db/prisma.js';
+import { requireAuth } from '../auth/jwt.js';
 import {
   CreateInventorySchema,
   UpdateInventorySchema,
   ListInventoriesSchema,
-} from "../validation/inventory.js";
-import type { Prisma } from "@prisma/client";
+} from '../validation/inventory.js';
+import type { Prisma } from '@prisma/client';
 
 const router = Router();
 
-function isOwnerOrAdmin(userId: string, ownerId: string, role: "USER" | "ADMIN") {
-  return role === "ADMIN" || userId === ownerId;
+function isOwnerOrAdmin(userId: string, ownerId: string, role: 'USER' | 'ADMIN') {
+  return role === 'ADMIN' || userId === ownerId;
 }
 
-
-router.post("/", requireAuth, async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   const parsed = CreateInventorySchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten() });
   }
   const dto = parsed.data;
   const userId = req.auth!.sub;
-
 
   const data: Prisma.InventoryCreateInput = {
     title: dto.title,
@@ -51,8 +49,7 @@ router.post("/", requireAuth, async (req, res) => {
   return res.status(201).json(inv);
 });
 
-
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   const parsed = ListInventoriesSchema.safeParse(req.query);
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten() });
@@ -60,20 +57,18 @@ router.get("/", async (req, res) => {
   const { mine, page, pageSize, tag, q } = parsed.data;
 
   if (mine && !req.auth) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const where: Prisma.InventoryWhereInput = mine
-    ? { ownerId: req.auth!.sub }
-    : { isPublic: true };
+  const where: Prisma.InventoryWhereInput = mine ? { ownerId: req.auth!.sub } : { isPublic: true };
 
   if (tag) where.tags = { has: tag };
-  if (q) where.title = { contains: q, mode: "insensitive" };
+  if (q) where.title = { contains: q, mode: 'insensitive' };
 
   const [items, total] = await Promise.all([
     prisma.inventory.findMany({
       where,
-      orderBy: { createdAt: "desc" },
+      orderBy: { createdAt: 'desc' },
       skip: (page - 1) * pageSize,
       take: pageSize,
       select: {
@@ -100,9 +95,7 @@ router.get("/", async (req, res) => {
   });
 });
 
-
-router.get("/:id", async (req, res) => {
-
+router.get('/:id', async (req, res) => {
   const { id } = req.params as { id: string };
 
   const inv = await prisma.inventory.findUnique({
@@ -119,20 +112,20 @@ router.get("/:id", async (req, res) => {
       ownerId: true,
     },
   });
-  if (!inv) return res.status(404).json({ error: "Not found" });
+  if (!inv) return res.status(404).json({ error: 'Not found' });
 
   if (!inv.isPublic) {
-    const role = (req.auth?.role ?? "USER") as "USER" | "ADMIN";
-    const userId = req.auth?.sub ?? "";
+    const role = (req.auth?.role ?? 'USER') as 'USER' | 'ADMIN';
+    const userId = req.auth?.sub ?? '';
     if (!isOwnerOrAdmin(userId, inv.ownerId, role)) {
-      return res.status(403).json({ error: "Forbidden" });
+      return res.status(403).json({ error: 'Forbidden' });
     }
   }
 
   return res.json(inv);
 });
 
-router.patch("/:id", requireAuth, async (req, res) => {
+router.patch('/:id', requireAuth, async (req, res) => {
   const parsed = UpdateInventorySchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten() });
@@ -144,12 +137,12 @@ router.patch("/:id", requireAuth, async (req, res) => {
     where: { id },
     select: { ownerId: true },
   });
-  if (!current) return res.status(404).json({ error: "Not found" });
+  if (!current) return res.status(404).json({ error: 'Not found' });
 
   const role = req.auth!.role;
   const userId = req.auth!.sub;
   if (!isOwnerOrAdmin(userId, current.ownerId, role)) {
-    return res.status(403).json({ error: "Forbidden" });
+    return res.status(403).json({ error: 'Forbidden' });
   }
 
   const data: Prisma.InventoryUpdateManyMutationInput = {
@@ -167,7 +160,7 @@ router.patch("/:id", requireAuth, async (req, res) => {
   });
 
   if (count === 0) {
-    return res.status(409).json({ error: "Version conflict" });
+    return res.status(409).json({ error: 'Version conflict' });
   }
 
   const updated = await prisma.inventory.findUnique({
@@ -188,20 +181,19 @@ router.patch("/:id", requireAuth, async (req, res) => {
   return res.json(updated);
 });
 
-
-router.delete("/:id", requireAuth, async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   const { id } = req.params as { id: string };
 
   const inv = await prisma.inventory.findUnique({
     where: { id },
     select: { ownerId: true },
   });
-  if (!inv) return res.status(404).json({ error: "Not found" });
+  if (!inv) return res.status(404).json({ error: 'Not found' });
 
   const role = req.auth!.role;
   const userId = req.auth!.sub;
   if (!isOwnerOrAdmin(userId, inv.ownerId, role)) {
-    return res.status(403).json({ error: "Forbidden" });
+    return res.status(403).json({ error: 'Forbidden' });
   }
 
   await prisma.inventory.delete({ where: { id } });
