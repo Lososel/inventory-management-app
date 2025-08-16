@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import passport from '../auth/passport.js';
 import { prisma } from '../db/prisma.js';
-import { issueAccessToken } from '../auth/jwt.js';
+import { issueAccessToken, requireAuth } from '../auth/jwt.js';
 
 const FRONTEND = process.env.FRONTEND_URL;
 
@@ -35,5 +35,16 @@ router.get(
 );
 
 router.get('/failed', (_req, res) => res.status(401).json({ error: 'OAuth failed' }));
+
+router.get('/', requireAuth, async (req, res) => {
+  const user = await prisma.user.findUnique({ where: { id: req.auth!.sub } });
+  if (!user) return res.status(404).json({ error: 'User not found' });
+  res.json({
+    id: user.id,
+    email: user.email,
+    name: user.name ?? null,
+    role: req.auth!.role,
+  });
+});
 
 export default router;
