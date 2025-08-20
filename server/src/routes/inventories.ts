@@ -31,7 +31,7 @@ router.post('/', requireAuth, async (req, res) => {
     owner: { connect: { id: userId } },
   };
 
-  const inv = await prisma.inventory.create({
+  const inventory = await prisma.inventory.create({
     data,
     select: {
       id: true,
@@ -46,7 +46,7 @@ router.post('/', requireAuth, async (req, res) => {
     },
   });
 
-  return res.status(201).json(inv);
+  return res.status(201).json(inventory);
 });
 
 router.get('/', async (req, res) => {
@@ -54,7 +54,7 @@ router.get('/', async (req, res) => {
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten() });
   }
-  const { mine, page, pageSize, tag, q } = parsed.data;
+  const { mine, page, pageSize, tag, query } = parsed.data;
 
   if (mine && !req.auth) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
   const where: Prisma.InventoryWhereInput = mine ? { ownerId: req.auth!.sub } : { isPublic: true };
 
   if (tag) where.tags = { has: tag };
-  if (q) where.title = { contains: q, mode: 'insensitive' };
+  if (query) where.title = { contains: query, mode: 'insensitive' };
 
   const [items, total] = await Promise.all([
     prisma.inventory.findMany({
@@ -184,15 +184,15 @@ router.patch('/:id', requireAuth, async (req, res) => {
 router.delete('/:id', requireAuth, async (req, res) => {
   const { id } = req.params as { id: string };
 
-  const inv = await prisma.inventory.findUnique({
+  const inventory = await prisma.inventory.findUnique({
     where: { id },
     select: { ownerId: true },
   });
-  if (!inv) return res.status(404).json({ error: 'Not found' });
+  if (!inventory) return res.status(404).json({ error: 'Not found' });
 
   const role = req.auth!.role;
   const userId = req.auth!.sub;
-  if (!isOwnerOrAdmin(userId, inv.ownerId, role)) {
+  if (!isOwnerOrAdmin(userId, inventory.ownerId, role)) {
     return res.status(403).json({ error: 'Forbidden' });
   }
 

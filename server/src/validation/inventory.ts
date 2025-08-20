@@ -39,6 +39,6 @@ export const ListInventoriesSchema = z.object({
   page: z.coerce.number().int().min(1).optional().default(1),
   pageSize: z.coerce.number().int().min(1).max(50).optional().default(10),
   tag: z.string().optional(),
-  q: z.string().optional(),
+  query: z.string().optional(),
 });
 export type ListInventoriesQuery = z.infer<typeof ListInventoriesSchema>;
